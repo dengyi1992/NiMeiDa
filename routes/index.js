@@ -295,6 +295,17 @@ router.get('/links', function (req, res) {
     //     success: 'success'
     // });
 });
+/**
+ * 关于我们
+ */
+router.get('/about',function (req, res, next) {
+    res.render('about', {
+        title: '关于我们',
+        user: req.session.user,
+        about: '我们是228',
+        success: 'success'
+    });
+});
 
 /**
  * 搜索
