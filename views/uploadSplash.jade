@@ -1,0 +1,16 @@
+//
+   Created by deng on 16-7-9.
+doctype html
+html
+    head
+        title= title
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+        h1= title
+        h2= content
+        form(method='post' action='/flashImage' enctype='multipart/form-data')
+            input(type="file" name='filename')
+            input(type="text" name='name')
+            a 输入名称
+            input(type="submit")
+

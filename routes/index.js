@@ -1,6 +1,7 @@
 var crypto = require('crypto'),
     Post = require('../models/post.js'),
     Comment = require('../models/comment.js'),
+    Splash = require('../models/Splash'),
     User = require('../models/user.js');
 var express = require('express');
 var router = express.Router();
@@ -106,8 +107,7 @@ router.post('/changepass', function (req, res) {
     }
     //生成密码的 md5 值
     var md5 = crypto.createHash('md5'),
-        password = md5.update(req.body.password).digest('hex');
-    var md5 = crypto.createHash('md5'),
+        password = md5.update(req.body.password).digest('hex'),
         newpassword = md5.update(req.body.newpassword).digest('hex');
 
     //检查用户是否存在
@@ -154,13 +154,7 @@ router.post('/post', function (req, res) {
         res.json({'success': '发布成功'});
     })
 });
-/**
- * 评论
- */
-router.post('/comment', checkLogin);
-router.post('/comment', function (req, res) {
 
-});
 /**
  * 获取所有信息
  */
@@ -213,6 +207,57 @@ router.post('/upload', multipartMiddleware, function (req, res) {
     //已经可以做进一步处理 req.files
 
 });
+/**
+ * 首页图片上传
+ */
+router.get('/flashImage', function (req, res, next) {
+    res.render('uploadSplash', {
+        title: '首页图片上传',
+        content: '图片推荐1080p适配手机'
+    });
+});
+
+router.post('/flashImage', multipartMiddleware, function (req, res) {
+    // var newname = utility.md5(filename + String((new Date()).getTime())) + path.extname(filename);
+    //生成密码的 md5 值
+    var dec = 'nimeida';
+    if (req.body.name==undefined) {
+        dec = req.body.name;
+    }
+    var md5 = crypto.createHash('md5'),
+        imgname = md5.update(req.files.filename.name + String((new Date()).getTime())).digest('hex');
+    var exname = req.files.filename.name.substring(req.files.filename.name.lastIndexOf('.') + 1);
+    var des_file = config.upload.path + imgname + "." + exname;
+    try {
+        fs.readFile(req.files.filename.path + "", function (err, data) {
+            fs.writeFile(des_file, data, function (err) {
+                var response;
+                if (err) {
+                    console.log(err);
+                } else {
+                    response = {
+                        'success': '上传成功',
+                        'imgurl': config.address + "images/" + imgname + "." + exname
+                    };
+                    var splash = new Splash(response.imgurl, dec);
+                    splash.save(function (err) {
+                        if (err) {
+                            return res.end(JSON.stringify(err));
+                        }
+                    })
+                }
+                console.log(response);
+                res.end(JSON.stringify(response));
+            });
+        });
+    } catch (e) {
+        res.json({'error': e.toString()});
+    }
+
+    //已经可以做进一步处理 req.files
+
+});
+
 /**
  * 标签分类
  */
@@ -298,7 +343,7 @@ router.get('/links', function (req, res) {
 /**
  * 关于我们
  */
-router.get('/about',function (req, res, next) {
+router.get('/about', function (req, res, next) {
     res.render('about', {
         title: '关于我们',
         user: req.session.user,
