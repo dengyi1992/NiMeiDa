@@ -1,0 +1,10 @@
+//
+   Created by deng on 16-7-9.
+
+extends layout
+
+block content
+    h1= title
+    div
+        -each link in links
+            a(href=link.link) #{link.name}<br>
