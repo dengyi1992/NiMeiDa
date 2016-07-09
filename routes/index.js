@@ -293,6 +293,146 @@ app.get('/links', function (req, res) {
 //     });
 // });
 /**
+ * 查询某个用户的
+ */
+app.get('/u/:name', function (req, res) {
+    var page = req.query.p ? parseInt(req.query.p) : 1;
+    //检查用户是否存在
+    User.get(req.params.name, function (err, user) {
+        if (err) {
+            return req.json({'error': err});
+        }
+        if (!user) {
+            return req.json({'error':'用户不存在!'});
+        }
+        //查询并返回该用户第 page 页的 10 篇文章
+        Post.getTen(user.name, page, function (err, posts, total) {
+            if (err) {
+                return req.json({'error': err});
+            }
+            res.json({
+                title: user.name,
+                posts: posts,
+                page: page,
+                isFirstPage: (page - 1) == 0,
+                isLastPage: ((page - 1) * 10 + posts.length) == total,
+                user: req.session.user,
+                success: 'success'
+            });
+        });
+    });
+});
+/**
+ * 某篇文章
+ */
+app.get('/u/:name/:day/:title', function (req, res) {
+    Post.getOne(req.params.name, req.params.day, req.params.title, function (err, post) {
+        if (err) {
+            return req.json({'error': err});
+        }
+        res.json({
+            title: req.params.title,
+            post: post,
+            user: req.session.user,
+            success: 'success'
+        });
+    });
+});
+/**
+ * 评论
+ */
+app.post('/u/:name/:day/:title', function (req, res) {
+    var date = new Date(),
+        time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
+            date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    var md5 = crypto.createHash('md5'),
+        email_MD5 = md5.update(req.body.email.toLowerCase()).digest('hex'),
+        head = "http://www.gravatar.com/avatar/" + email_MD5 + "?s=48";
+    var comment = {
+        name: req.body.name,
+        head: head,
+        email: req.body.email,
+        website: req.body.website,
+        time: time,
+        content: req.body.content
+    };
+    var newComment = new Comment(req.params.name, req.params.day, req.params.title, comment);
+    newComment.save(function (err) {
+        if (err) {
+            return req.json({'error': err});
+        }
+        req.json({'success': '留言成功!'});
+    });
+});
+/**
+ * 编辑获取
+ */
+app.get('/edit/:name/:day/:title', checkLogin);
+app.get('/edit/:name/:day/:title', function (req, res) {
+    var currentUser = req.session.user;
+    Post.edit(currentUser.name, req.params.day, req.params.title, function (err, post) {
+        if (err) {
+            return req.json({'error': err});
+        }
+        res.json({
+            title: '编辑',
+            post: post,
+            user: req.session.user,
+            success: 'success'
+        });
+    });
+});
+/**
+ * 编辑
+ */
+app.post('/edit/:name/:day/:title', checkLogin);
+app.post('/edit/:name/:day/:title', function (req, res) {
+    var currentUser = req.session.user;
+    Post.update(currentUser.name, req.params.day, req.params.title, req.body.post, function (err) {
+        var url = encodeURI('/u/' + req.params.name + '/' + req.params.day + '/' + req.params.title);
+        if (err) {
+            return req.json({'error': err});
+        }
+        req.json({'success': '修改成功!',url:url});
+        //成功！返回文章页
+    });
+});
+/**
+ * 删除
+ */
+app.get('/remove/:name/:day/:title', checkLogin);
+app.get('/remove/:name/:day/:title', function (req, res) {
+    var currentUser = req.session.user;
+    Post.remove(currentUser.name, req.params.day, req.params.title, function (err) {
+        if (err) {
+            return req.json({'error': err});
+        }
+        req.json({'success': '删除成功!'});
+    });
+});
+/**
+ * 转载
+ */
+app.get('/reprint/:name/:day/:title', checkLogin);
+app.get('/reprint/:name/:day/:title', function (req, res) {
+    Post.edit(req.params.name, req.params.day, req.params.title, function (err, post) {
+        if (err) {
+            return req.json({'error': err});
+        }
+        var currentUser = req.session.user,
+            reprint_from = {name: post.name, day: post.time.day, title: post.title},
+            reprint_to = {name: currentUser.name, head: currentUser.head};
+        Post.reprint(reprint_from, reprint_to, function (err, post) {
+            if (err) {
+                return req.json({'error': err});
+            }
+            var url = encodeURI('/u/' + post.name + '/' + post.time.day + '/' + post.title);
+            req.json({'success': '转载成功!','url':url});
+        });
+    });
+});
+
+/**
  * 收藏
  */
 router.get('/collection', checkLogin);
