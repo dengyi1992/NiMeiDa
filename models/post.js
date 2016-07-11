@@ -13,13 +13,12 @@ var mongodb = require('./db');
  * @param icons 金币数量
  * @constructor
  */
-function Post(name, head, addesc, adurl, imgurl, tags, icons) {
+function Post(name, head,title,content, imgurls, tags) {
     this.name = name;
     this.head = head;
-    this.addesc = addesc;
-    this.adurl = adurl;
-    this.imgurl = imgurl;
-    this.icons = icons;
+    this.title = title;
+    this.content =content;
+    this.imgurls = imgurls;
     this.tags = tags;
 }
 
@@ -42,10 +41,10 @@ Post.prototype.save = function (callback) {
         name: this.name,
         head: this.head,
         time: time,
-        addesc: this.addesc,
+        content: this.content,
+        title:this.title,
         tags: this.tags,
-        adurl: this.adurl,
-        imgurl:this.imgurl,
+        imgurls:this.imgurls,
         icons:this.icons,
         comments: [],
         reprint_info: [],

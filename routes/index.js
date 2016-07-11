@@ -146,7 +146,9 @@ router.post('/post', function (req, res) {
 
     var currentUser = req.session.user,
         tags = [req.body.tag1, req.body.tag2, req.body.tag3],
-        post = new Post(currentUser.name, currentUser.head, req.body.title, tags, req.body.post);
+    //function Post(name, head,title,post, imgurls, tags) {
+
+        post = new Post(currentUser.name, currentUser.head, req.body.title, req.body.post, req.body.imgurls, tags);
     post.save(function (err) {
         if (err) {
             return res.json({'error': err});
@@ -221,7 +223,7 @@ router.post('/flashImage', multipartMiddleware, function (req, res) {
     // var newname = utility.md5(filename + String((new Date()).getTime())) + path.extname(filename);
     //生成密码的 md5 值
     var dec = 'nimeida';
-    if (req.body.name==undefined) {
+    if (req.body.name == undefined) {
         dec = req.body.name;
     }
     var md5 = crypto.createHash('md5'),
@@ -625,6 +627,10 @@ router.get('/com/try', function (req, res, next) {
             res.json(JSON.parse(str));
         }
     });
+});
+
+router.get('/haibao', function (req, res, next) {
+    res.render('haibao', {});
 });
 router.use(function (req, res) {
     res.render("404");
