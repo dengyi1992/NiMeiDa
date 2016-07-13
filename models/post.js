@@ -48,7 +48,8 @@ Post.prototype.save = function (callback) {
         icons:this.icons,
         comments: [],
         reprint_info: [],
-        pv: 0
+        pv: 0,
+        zan:0
     };
     //打开数据库
     mongodb.open(function (err, db) {
