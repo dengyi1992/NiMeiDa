@@ -49,8 +49,8 @@
       <file leaf-file-name="verison.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/verison.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.12926391">
-              <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.09694794">
+              <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -799,7 +799,7 @@
       <workItem from="1468413677423" duration="297000" />
       <workItem from="1468414200622" duration="155000" />
       <workItem from="1468414880721" duration="2041000" />
-      <workItem from="1468506752380" duration="1171000" />
+      <workItem from="1468506752380" duration="1995000" />
     </task>
     <task id="LOCAL-00001" summary="首页图片上传">
       <created>1468046429393</created>
@@ -849,11 +849,17 @@
       <option name="project" value="LOCAL" />
       <updated>1468507220895</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="首页图片上传">
+      <created>1468508505530</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1468508505531</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23795000" />
+    <option name="totallyTimeSpent" value="24619000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="27" width="1920" height="1053" extended-state="0" />
@@ -1289,8 +1295,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/verison.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.12926391">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.09694794">
+          <caret line="3" column="17" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
           <folding />
         </state>
       </provider>
