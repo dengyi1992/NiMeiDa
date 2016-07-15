@@ -195,7 +195,7 @@ router.post('/upload', multipartMiddleware, function (req, res) {
                 } else {
                     response = {
                         'success': '上传成功',
-                        'imgurl': config.address + "images/" + imgname + "." + exname
+                        'imgurl': "images/" + imgname + "." + exname
                     };
                 }
                 console.log(response);
