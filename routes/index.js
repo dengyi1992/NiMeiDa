@@ -297,10 +297,14 @@ router.get('/tags/:tag', function (req, res) {
             return res.json({'error': err});
         }
         res.json({
-            title: 'TAG:' + req.params.tag,
             posts: posts,
-            user: req.session.user,
-            success: 'success'
+            page: page,
+            isFirstPage: true,
+            isLastPage: true
+            // title: 'TAG:' + req.params.tag,
+            // posts: posts,
+            // user: req.session.user,
+            // success: 'success'
         });
     });
 });
