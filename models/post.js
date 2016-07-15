@@ -368,9 +368,9 @@ Post.getTag = function (tag, callback) {
             collection.find({
                 "tags": tag
             }, {
-                "name": 1,
-                "time": 1,
-                "title": 1
+                // "name": 1,
+                // "time": 1,
+                // "title": 1
             }).sort({
                 time: -1
             }).toArray(function (err, docs) {
