@@ -298,7 +298,7 @@ router.get('/tags/:tag', function (req, res) {
         }
         res.json({
             posts: posts,
-            page: page,
+            page: 1,
             isFirstPage: true,
             isLastPage: true
             // title: 'TAG:' + req.params.tag,
