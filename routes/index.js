@@ -450,6 +450,27 @@ router.post('/u/:name/:day/:title', function (req, res) {
         res.json({'success': '留言成功!'});
     });
 });
+router.post('/comment',checkLogin);
+router.post('/comment',function(req,res){
+    var date = new Date(),
+        time = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " +
+            date.getHours() + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
+    var comment = {
+        name: req.body.name,
+        head: head,
+        email: req.body.email,
+        website: req.body.website,
+        time: time,
+        content: req.body.content
+    };
+    var newComment = new Comment(req.body.authorname,req.body.publish_day,req.body.title,comment);
+    newComment.save(function (err) {
+        if (err) {
+            return res.json({'error': err});
+        }
+        res.json({'success': '留言成功!'});
+    });
+});
 /**
  * 编辑获取
  */
