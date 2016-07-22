@@ -195,7 +195,7 @@ router.post('/upload', multipartMiddleware, function (req, res) {
                 } else {
                     response = {
                         'success': '上传成功',
-                        'imgurl': config.address + "images/" + imgname + "." + exname
+                        'imgurl': "images/" + imgname + "." + exname
                     };
                 }
                 console.log(response);
@@ -297,10 +297,14 @@ router.get('/tags/:tag', function (req, res) {
             return res.json({'error': err});
         }
         res.json({
-            title: 'TAG:' + req.params.tag,
             posts: posts,
-            user: req.session.user,
-            success: 'success'
+            page: 1,
+            isFirstPage: true,
+            isLastPage: true
+            // title: 'TAG:' + req.params.tag,
+            // posts: posts,
+            // user: req.session.user,
+            // success: 'success'
         });
     });
 });
